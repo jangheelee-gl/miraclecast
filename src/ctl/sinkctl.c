@@ -460,14 +460,19 @@ static void spawn_gst(struct ctl_sink *s)
 
 	pid = fork();
 	if (pid < 0) {
+		cli_printf("[GEEKSLOFT] SINK Error pid pork fail");
+
 		return cli_vERRNO();
 	} else if (!pid) {
 		/* child */
+		cli_printf("[GEEKSLOFT] SINK ???");
 
 		sigemptyset(&mask);
 		sigprocmask(SIG_SETMASK, &mask, NULL);
 
 #ifdef ENABLE_SYSTEMD
+		cli_printf("[GEEKSLOFT] SINK Launch Player");
+
 		/* redirect stdout/stderr to journal */
 		fd_journal = sd_journal_stream_fd("miracle-sinkctl-gst",
 						  LOG_DEBUG,
@@ -483,6 +488,7 @@ static void spawn_gst(struct ctl_sink *s)
 #ifdef ENABLE_SYSTEMD
 		}
 #endif
+		cli_printf("[GEEKSLOFT] SINK Launch Player");
 
 		launch_player(s);
 		_exit(1);
@@ -602,8 +608,10 @@ void ctl_fn_sink_disconnected(struct ctl_sink *s)
 
 void ctl_fn_sink_resolution_set(struct ctl_sink *s)
 {
-	cli_printf("SINK set resolution %dx%d\n", s->hres, s->vres);
+	cli_printf("[GEEKSLOFT] SINK set resolution %dx%d\n", s->hres, s->vres);
 	if (sink_connected)
+		cli_printf("[GEEKSLOFT] SINK set sink connected");
+
 		spawn_gst(s);
 }
 

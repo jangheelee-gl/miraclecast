@@ -136,7 +136,7 @@ function show_wpa_supplicant_command {
 # find wpa_supplicant pid
 #
 function find_wpa_supplicant_pid {
-   show_wpa_supplicant_process | awk '{print $2}'
+   show_wpa_supplicant_process | awk '{print $2}' #2 -> 1
 }
 
 #
@@ -166,13 +166,13 @@ function kill_network_manager {
    if check_ubuntu_distro || check_debian_distro
    then
       # ubuntu manager restarts automatically wpa_supplicant
-      sudo service NetworkManager stop
+      service NetworkManager stop
    elif check_archlinux_distro
    then
-      sudo systemctl stop Network.service
+      systemctl stop Network.service
    else
-      sudo systemctl stop NetworkManager
-      sudo systemctl stop wpa_supplicant
+      systemctl stop NetworkManager
+      systemctl stop wpa_supplicant
    fi
 }
 
@@ -183,11 +183,11 @@ function start_network_manager {
    echo starting NetworkManager
    if check_ubuntu_distro || check_debian_distro
    then
-      sudo service NetworkManager start
+      service NetworkManager start
    elif check_archlinux_distro
    then
-      sudo systemctl start Network.service
+      systemctl start Network.service
    else
-      sudo service NetworkManager start
+      service NetworkManager start
    fi
 }
